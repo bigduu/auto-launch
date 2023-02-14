@@ -45,7 +45,7 @@ impl AutoLaunch {
     /// - failed to open the registry key
     /// - failed to delete value
     pub fn disable(&self) -> Result<()> {
-        let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+        let hkcu = RegKey::predef(HKEY_LOCAL_MACHINE);
         hkcu.open_subkey_with_flags(AL_REGKEY, KEY_SET_VALUE)?
             .delete_value(&self.app_name)?;
         Ok(())
@@ -53,7 +53,7 @@ impl AutoLaunch {
 
     /// Check whether the AutoLaunch setting is enabled
     pub fn is_enabled(&self) -> Result<bool> {
-        let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+        let hkcu = RegKey::predef(HKEY_LOCAL_MACHINE);
         Ok(hkcu
             .open_subkey_with_flags(AL_REGKEY, KEY_READ)?
             .get_value::<String, _>(&self.app_name)
