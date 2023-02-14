@@ -1,5 +1,5 @@
 use crate::{AutoLaunch, Result};
-use winreg::enums::{HKEY_CURRENT_USER, KEY_READ, KEY_SET_VALUE};
+use winreg::enums::{HKEY_LOCAL_MACHINE, KEY_READ, KEY_SET_VALUE};
 use winreg::RegKey;
 
 static AL_REGKEY: &str = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
@@ -29,7 +29,7 @@ impl AutoLaunch {
     /// - failed to open the registry key
     /// - failed to set value
     pub fn enable(&self) -> Result<()> {
-        let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+        let hkcu = RegKey::predef(HKEY_LOCAL_MACHINE);
         hkcu.open_subkey_with_flags(AL_REGKEY, KEY_SET_VALUE)?
             .set_value::<_, _>(
                 &self.app_name,
